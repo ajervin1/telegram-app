@@ -2,16 +2,15 @@
 const TelegramBot = require("node-telegram-bot-api")
 
 // Credentials required to connect to the Telegram bot
-const TELEGRAM_BOT_API_TOKEN = "7831043785:AAFNZiRWL7b8Y4TYNIZo01SqytYdLELqspI"
-const TELEGRAM_CHAT_ID = "5975819827"
+const token = '7831043785:AAFNZiRWL7b8Y4TYNIZo01SqytYdLELqspI';
+const CHAT_ID = "5975819827"
 // Create Bot Client
-const bot = new TelegramBot(TELEGRAM_BOT_API_TOKEN)
+// Create a bot using 'polling' (long polling)
+const bot = new TelegramBot(token, { polling: true });
 
-async function sendChatMessage(TELEGRAM_CHAT_ID, message){
-	await bot.sendMessage(TELEGRAM_CHAT_ID, message)
-}
-
-async function main(){
-	await sendChatMessage(TELEGRAM_CHAT_ID, "Hello World")
-}
-main()
+// Matches "/echo [whatever]"
+bot.on('message', async (msg) => {
+	const chatId = msg.chat.id;
+	const message = msg.text;
+	await bot.sendMessage(chatId, "Message has been entered in the chat");
+})
